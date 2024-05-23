@@ -5,54 +5,71 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AdvancedAttributesChanger"
         mc:Ignorable="d"
-        Title="Windows Advanced Attributes Changer" Height="768" Width="1024">
+        Title="Windows Advanced Attributes Changer" Height="768" Width="1200">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-            <StackPanel Orientation="Vertical" Margin="50">
-                <RadioButton GroupName="RunChoice" x:Name="RunFile" IsChecked="True" Cursor="Hand">Run on single file</RadioButton>
-                <StackPanel Orientation="Vertical" x:Name="SingleFilePanel">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox Width="350" Margin="5" HorizontalAlignment="Left"></TextBox>
-                        <Button Width="200">Select File</Button>
-                    </StackPanel>
-                    <CheckBox Margin="10" Cursor="Hand">Force file modification</CheckBox>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <StackPanel Orientation="Vertical" Margin="5">
-                            <TextBlock Margin="10" HorizontalAlignment="Center">Attributes to add</TextBlock>
-                            <local:AttributesComboBox x:Name="SingleAddCombo" Command="AddItem" Cursor="Hand"/>
-                            <ItemsControl Width="165" x:Name="SingleAddList" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                <StackPanel Orientation="Vertical" Margin="50">
+                    <RadioButton GroupName="RunChoice" x:Name="RunFile" IsChecked="True" Cursor="Hand">Run on single file</RadioButton>
+                    <StackPanel Orientation="Vertical" x:Name="SingleFilePanel">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Width="350" Margin="5" HorizontalAlignment="Left"></TextBox>
+                            <Button Width="200">Select File</Button>
                         </StackPanel>
-                        <StackPanel Orientation="Vertical" Margin="5">
-                            <TextBlock Margin="10" HorizontalAlignment="Center">Attributes to remove</TextBlock>
-                            <local:AttributesComboBox x:Name="SingleRemoveCombo" Command="AddItem" Cursor="Hand"/>
-                            <ItemsControl Width="165" x:Name="SingleRemoveList" />
+                        <CheckBox Margin="10" Cursor="Hand">Force file modification</CheckBox>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <StackPanel Orientation="Vertical" Margin="5">
+                                <TextBlock Margin="10" HorizontalAlignment="Center">Attributes to add</TextBlock>
+                                <local:AttributesComboBox x:Name="SingleAddCombo" Command="AddItem" Cursor="Hand"/>
+                                <ItemsControl Width="165" x:Name="SingleAddList" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="5">
+                                <TextBlock Margin="10" HorizontalAlignment="Center">Attributes to remove</TextBlock>
+                                <local:AttributesComboBox x:Name="SingleRemoveCombo" Command="AddItem" Cursor="Hand"/>
+                                <ItemsControl Width="165" x:Name="SingleRemoveList" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Margin="50">
+                    <RadioButton GroupName="RunChoice"  x:Name="RunDirectory" Cursor="Hand">Run on directory</RadioButton>
+                    <StackPanel Orientation="Vertical" x:Name="DirectoryPanel" Visibility="Visible">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Width="350" Margin="5" HorizontalAlignment="Left"></TextBox>
+                            <Button Width="200">Select Folder</Button>
+                        </StackPanel>
+                        <CheckBox Margin="10" Cursor="Hand">Run recursively</CheckBox>
+                        <CheckBox Margin="10" Cursor="Hand">Force file modification</CheckBox>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <StackPanel Orientation="Vertical" Margin="5">
+                                <TextBlock Margin="10" HorizontalAlignment="Center">Attributes to add</TextBlock>
+                                <local:AttributesComboBox x:Name="FolderAddCombo" Command="AddItem" Cursor="Hand"/>
+                                <ItemsControl Width="165" x:Name="FolderAddList" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="5">
+                                <TextBlock Margin="10" HorizontalAlignment="Center">Attributes to remove</TextBlock>
+                                <local:AttributesComboBox x:Name="FolderRemoveCombo" Command="AddItem" Cursor="Hand"/>
+                                <ItemsControl Width="165" x:Name="FolderRemoveList" />
+                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
-
-            <StackPanel Orientation="Vertical" Margin="50">
-                <RadioButton GroupName="RunChoice"  x:Name="RunDirectory" Cursor="Hand">Run on directory</RadioButton>
-                <StackPanel Orientation="Vertical" x:Name="DirectoryPanel" Visibility="Visible">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox Width="350" Margin="5" HorizontalAlignment="Left"></TextBox>
-                        <Button Width="200">Select Folder</Button>
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="25" MinWidth="300">
+                <TextBlock HorizontalAlignment="Center" FontSize="20" Margin="0 0 0 10">Current selection attributes</TextBlock>
+                <ListView x:Name="AttributesPreviewList" Background="LightGray" MinHeight="500">
+                    <StackPanel Width = "290" Orientation="Horizontal">
+                        <TextBlock>C:/Users/joel/Desktop/text.txt</TextBlock>
+                        <TextBlock Margin="5 0 5 0">=</TextBlock>
+                        <TextBlock>Archive, Read Only</TextBlock>
                     </StackPanel>
-                    <CheckBox Margin="10" Cursor="Hand">Run recursively</CheckBox>
-                    <CheckBox Margin="10" Cursor="Hand">Force file modification</CheckBox>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <StackPanel Orientation="Vertical" Margin="5">
-                            <TextBlock Margin="10" HorizontalAlignment="Center">Attributes to add</TextBlock>
-                            <local:AttributesComboBox x:Name="FolderAddCombo" Command="AddItem" Cursor="Hand"/>
-                            <ItemsControl Width="165" x:Name="FolderAddList" />
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical" Margin="5">
-                            <TextBlock Margin="10" HorizontalAlignment="Center">Attributes to remove</TextBlock>
-                            <local:AttributesComboBox x:Name="FolderRemoveCombo" Command="AddItem" Cursor="Hand"/>
-                            <ItemsControl Width="165" x:Name="FolderRemoveList" />
-                        </StackPanel>
+                    <StackPanel Width = "290" Orientation="Horizontal">
+                        <TextBlock>C:/Users/joel/Desktop/text.txt</TextBlock>
+                        <TextBlock Margin="5 0 5 0">=</TextBlock>
+                        <TextBlock>Archive, Read Only</TextBlock>
                     </StackPanel>
-                </StackPanel>
+                </ListView>
             </StackPanel>
         </StackPanel>
     </ScrollViewer>
