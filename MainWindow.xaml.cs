@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,20 +21,81 @@ namespace AdvancedAttributesChanger
             SingleAddCombo.Command = AddItem;
         }
 
-        private void TogglePanel(object sender, RoutedEventArgs e) {
-            RadioButton selected = (RadioButton)sender;
-            
-            if (selected == null) { return; }
+        private void OpenFileDialog(object sender, RoutedEventArgs e) {
+            // Configure open file dialog box
+            Microsoft.Win32.OpenFileDialog dialog = new();
 
-            if (selected.Name.Equals("RunFile")) {
-                DirectoryPanel.Visibility = Visibility.Collapsed;
-                SingleFilePanel.Visibility = Visibility.Visible;
-            } else {
-                DirectoryPanel.Visibility = Visibility.Visible;
-                SingleFilePanel.Visibility = Visibility.Collapsed;
+            // Show open file dialog box
+            bool? result = dialog.ShowDialog();
+
+            // Process open file dialog box results
+            if (result == true)
+            {
+                FilePathSelection.Text = dialog.FileName;
+                RunFile.IsChecked = true;
             }
 
             e.Handled = true;
+        }
+
+        private void OpenFolderDialog(object sender, RoutedEventArgs e) {
+            // Configure open folder dialog box
+            Microsoft.Win32.OpenFolderDialog dialog = new();
+            dialog.Multiselect = false;
+            dialog.Title = "Select a folder";
+
+            // Show open folder dialog box
+            bool? result = dialog.ShowDialog();
+
+            // Process open folder dialog box results
+            if (result == true)
+            {
+                // Get the selected folder
+                DirectoryPathSelection.Text = dialog.FolderName;
+                RunDirectory.IsChecked = true;
+            }
+
+            e.Handled = true;
+        }
+
+        private void RenderAttributeViewerList(object sender, RoutedEventArgs e) {
+            TextBox textBox = (TextBox)sender;
+            if (textBox == null) { return; }
+            Trace.WriteLine(textBox.Name);
+
+            if (textBox.Name.Equals("FilePathSelection") && textBox.Text != "") {
+                if (File.Exists(textBox.Text) == false) { return; }
+
+                StackPanel itemToAdd = CreateViewerItem(textBox.Text, "a");
+                AttributesPreviewList.Items.Clear();
+                AttributesPreviewList.Items.Add(itemToAdd);
+                DirectoryPathSelection.Text = "";
+            }
+
+            if (textBox.Name.Equals("DirectoryPathSelection") && textBox.Text != "") {
+                if (Directory.Exists(textBox.Text) == false) { return; }
+                String[] directoryChildren = Directory.GetFiles(textBox.Text);
+                AttributesPreviewList.Items.Clear();
+                foreach (String childrenPath in directoryChildren)
+                {
+                    StackPanel itemToAdd = CreateViewerItem(childrenPath, "a");
+                    AttributesPreviewList.Items.Add(itemToAdd);
+                }
+                FilePathSelection.Text = "";
+            }
+        }
+
+        private static StackPanel CreateViewerItem(String filePath, String fileAttributes){
+            StackPanel stackPanel = new StackPanel { Orientation = Orientation.Horizontal, MinWidth = 290 };
+            TextBlock path = new TextBlock { Text = filePath };
+            TextBlock separator = new TextBlock { Text = "=", Margin = new Thickness(5,0,5,0)};
+            TextBlock attributes = new TextBlock { Text = fileAttributes };
+
+            stackPanel.Children.Add(path);
+            stackPanel.Children.Add(separator);
+            stackPanel.Children.Add(attributes);
+
+            return stackPanel;
         }
 
         private DockPanel CreateItem(String text)
@@ -124,6 +186,8 @@ namespace AdvancedAttributesChanger
             ItemsControl list = (ItemsControl)parentList;
 
             list.Items.Remove(itemToDelete);
+
+            e.Handled = true;
         }
 
         private static bool IsInList(DockPanel toFind, ItemsControl list) {
