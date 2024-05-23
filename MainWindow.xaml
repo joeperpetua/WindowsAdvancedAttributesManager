@@ -5,60 +5,55 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AdvancedAttributesChanger"
         mc:Ignorable="d"
-        Title="Windows Advanced Attributes Changer" Height="450" Width="800">
-    <StackPanel Orientation="Vertical">
-
-        <StackPanel Orientation="Vertical" Margin="50">
-            <RadioButton GroupName="RunChoice" x:Name="RunFile" Checked="TogglePanel" IsChecked="True">Run on single file</RadioButton>
-            <StackPanel Orientation="Vertical" x:Name="SingleFilePanel">
-                <StackPanel Orientation="Horizontal">
-                    <TextBox Width="350" Margin="5" HorizontalAlignment="Left"></TextBox>
-                    <Button Width="200">Select File</Button>
+        Title="Windows Advanced Attributes Changer" Height="768" Width="1024">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+            <StackPanel Orientation="Vertical" Margin="50">
+                <RadioButton GroupName="RunChoice" x:Name="RunFile" IsChecked="True" Cursor="Hand">Run on single file</RadioButton>
+                <StackPanel Orientation="Vertical" x:Name="SingleFilePanel">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Width="350" Margin="5" HorizontalAlignment="Left"></TextBox>
+                        <Button Width="200">Select File</Button>
+                    </StackPanel>
+                    <CheckBox Margin="10" Cursor="Hand">Force file modification</CheckBox>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <StackPanel Orientation="Vertical" Margin="5">
+                            <TextBlock Margin="10" HorizontalAlignment="Center">Attributes to add</TextBlock>
+                            <local:AttributesComboBox x:Name="SingleAddCombo" Command="AddItem" Cursor="Hand"/>
+                            <ItemsControl Width="165" x:Name="SingleAddList" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="5">
+                            <TextBlock Margin="10" HorizontalAlignment="Center">Attributes to remove</TextBlock>
+                            <local:AttributesComboBox x:Name="SingleRemoveCombo" Command="AddItem" Cursor="Hand"/>
+                            <ItemsControl Width="165" x:Name="SingleRemoveList" />
+                        </StackPanel>
+                    </StackPanel>
                 </StackPanel>
-                <CheckBox Margin="10">Force file modification</CheckBox>
-                <StackPanel Orientation="Horizontal">
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Margin="10">Attributes to add</TextBlock>
-                        <ComboBox Margin="10">
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_READONLY">Read Only</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_HIDDEN">Hidden</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_SYSTEM">system</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_DIRECTORY">Directory</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_ARCHIVE">Archive</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_DEVICE">Device</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_NORMAL">Normal</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_TEMPORARY">Temporary</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_SPARSE_FILE">Sparse file</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_REPARSE_POINT">Reparse point</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_COMPRESSED">Compressed</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_OFFLINE">Offline</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_NOT_CONTENT_INDEXED">Not content indexed</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_ENCRYPTED">Encrypted</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_INTEGRITY_STREAM">Integrity stream</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_VIRTUAL">Virtual</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_NO_SCRUB_DATA">No scrub data</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_EA">EA</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_PINNED">Pinned</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_UNPINNED">Unpinned</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_RECALL_ON_OPEN">Recall on open</ComboBoxItem>
-                            <ComboBoxItem Name="FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS">Recall on data access</ComboBoxItem>
-                        </ComboBox>
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Margin="50">
+                <RadioButton GroupName="RunChoice"  x:Name="RunDirectory" Cursor="Hand">Run on directory</RadioButton>
+                <StackPanel Orientation="Vertical" x:Name="DirectoryPanel" Visibility="Visible">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Width="350" Margin="5" HorizontalAlignment="Left"></TextBox>
+                        <Button Width="200">Select Folder</Button>
+                    </StackPanel>
+                    <CheckBox Margin="10" Cursor="Hand">Run recursively</CheckBox>
+                    <CheckBox Margin="10" Cursor="Hand">Force file modification</CheckBox>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <StackPanel Orientation="Vertical" Margin="5">
+                            <TextBlock Margin="10" HorizontalAlignment="Center">Attributes to add</TextBlock>
+                            <local:AttributesComboBox x:Name="FolderAddCombo" Command="AddItem" Cursor="Hand"/>
+                            <ItemsControl Width="165" x:Name="FolderAddList" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="5">
+                            <TextBlock Margin="10" HorizontalAlignment="Center">Attributes to remove</TextBlock>
+                            <local:AttributesComboBox x:Name="FolderRemoveCombo" Command="AddItem" Cursor="Hand"/>
+                            <ItemsControl Width="165" x:Name="FolderRemoveList" />
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
         </StackPanel>
-
-        <StackPanel Orientation="Vertical" Margin="50">
-            <RadioButton GroupName="RunChoice"  x:Name="RunDirectory" Checked="TogglePanel">Run on directory</RadioButton>
-            <StackPanel Orientation="Vertical" x:Name="DirectoryPanel" Visibility="Collapsed">
-                <StackPanel Orientation="Horizontal">
-                    <TextBox Width="350" Margin="5" HorizontalAlignment="Left"></TextBox>
-                    <Button Width="200">Select Folder</Button>
-                </StackPanel>
-                <CheckBox Margin="10">Run recursively</CheckBox>
-                <CheckBox Margin="10">Force file modification</CheckBox>
-            </StackPanel>
-        </StackPanel>
-
-    </StackPanel>
+    </ScrollViewer>
 </Window>

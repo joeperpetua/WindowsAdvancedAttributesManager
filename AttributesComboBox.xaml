@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="AdvancedAttributesChanger.AttributesComboBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AdvancedAttributesChanger"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <ComboBox SelectionChanged="HandleSelectionChanged">
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_READONLY">Read Only</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_HIDDEN">Hidden</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_SYSTEM">System</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_DIRECTORY">Directory</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_ARCHIVE">Archive</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_DEVICE">Device</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_NORMAL">Normal</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_TEMPORARY">Temporary</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_SPARSE_FILE">Sparse file</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_REPARSE_POINT">Reparse point</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_COMPRESSED">Compressed</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_OFFLINE">Offline</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_NOT_CONTENT_INDEXED">Not content indexed</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_ENCRYPTED">Encrypted</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_INTEGRITY_STREAM">Integrity stream</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_VIRTUAL">Virtual</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_NO_SCRUB_DATA">No scrub data</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_EA">EA</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_PINNED">Pinned</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_UNPINNED">Unpinned</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_RECALL_ON_OPEN">Recall on open</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS">Recall on data access</ComboBoxItem>
+        </ComboBox> 
+</UserControl>
