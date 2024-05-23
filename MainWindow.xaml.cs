@@ -62,27 +62,41 @@ namespace AdvancedAttributesChanger
             TextBox textBox = (TextBox)sender;
             if (textBox == null) { return; }
             Trace.WriteLine(textBox.Name);
+            String textBoxPath = textBox.Text.ToString();
 
-            if (textBox.Name.Equals("FilePathSelection") && textBox.Text != "") {
-                if (File.Exists(textBox.Text) == false) { return; }
+            if (textBox.Name.Equals("FilePathSelection") && textBoxPath != "") {
+                if (File.Exists(textBoxPath) == false) { return; }
 
-                StackPanel itemToAdd = CreateViewerItem(textBox.Text, "a");
+                StackPanel itemToAdd = CreateViewerItem(textBoxPath, GetAttributeNames(textBoxPath));
                 AttributesPreviewList.Items.Clear();
                 AttributesPreviewList.Items.Add(itemToAdd);
                 DirectoryPathSelection.Text = "";
             }
 
-            if (textBox.Name.Equals("DirectoryPathSelection") && textBox.Text != "") {
-                if (Directory.Exists(textBox.Text) == false) { return; }
-                String[] directoryChildren = Directory.GetFiles(textBox.Text);
+            if (textBox.Name.Equals("DirectoryPathSelection") && textBoxPath != "") {
+                if (Directory.Exists(textBoxPath) == false) { return; }
+                String[] directoryChildren = Directory.GetFiles(textBoxPath);
                 AttributesPreviewList.Items.Clear();
                 foreach (String childrenPath in directoryChildren)
                 {
-                    StackPanel itemToAdd = CreateViewerItem(childrenPath, "a");
+                    StackPanel itemToAdd = CreateViewerItem(childrenPath, GetAttributeNames(childrenPath));
                     AttributesPreviewList.Items.Add(itemToAdd);
                 }
                 FilePathSelection.Text = "";
             }
+        }
+
+        static string GetAttributeNames(String filePath) {
+            FileAttributes fileAttrib = File.GetAttributes(filePath);
+            List<string> attributeNames = new List<string>();
+
+            foreach (FileAttributes currentAttrib in Enum.GetValues(fileAttrib.GetType())) {
+                if (fileAttrib.HasFlag(currentAttrib)) {
+                    attributeNames.Add(currentAttrib.ToString());
+                }
+            }
+
+            return string.Join(", ", attributeNames);
         }
 
         private static StackPanel CreateViewerItem(String filePath, String fileAttributes){
