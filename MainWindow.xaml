@@ -16,42 +16,42 @@
     </Window.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                 <StackPanel Orientation="Vertical" Margin="50">
                     <RadioButton GroupName="RunChoice" x:Name="RunFile" IsChecked="True" Cursor="Hand">Run on single file</RadioButton>
                     <StackPanel Orientation="Vertical" x:Name="SingleFilePanel">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox x:Name="FilePathSelection" Width="350" Margin="5" HorizontalAlignment="Left" TextChanged="RenderAttributeViewerList"></TextBox>
-                            <Button Template="{DynamicResource ButtonTemplate}" Width="200" Click="OpenFileDialog">Select File</Button>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBox Style="{DynamicResource RoundTextBox}" x:Name="FilePathSelection" Width="350" Margin="5" HorizontalAlignment="Left" TextChanged="RenderAttributeViewerList"></TextBox>
+                        <Button Template="{DynamicResource ButtonTemplate}" Width="200" Click="OpenFileDialog" Margin="10 5 0 5">Select File</Button>
+                    </StackPanel>
+                    <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="SingleForceModification" Margin="10" Cursor="Hand">Force file modification.</CheckBox>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <StackPanel Orientation="Vertical" Margin="5">
+                            <TextBlock Margin="10" HorizontalAlignment="Center">Attributes to add</TextBlock>
+                            <local:AttributesComboBox x:Name="SingleAddCombo" Command="AddItem" Cursor="Hand"/>
+                            <ItemsControl Width="165" x:Name="SingleAddList" />
                         </StackPanel>
-                        <CheckBox x:Name="SingleForceModification" Margin="10" Cursor="Hand">Force file modification.</CheckBox>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <StackPanel Orientation="Vertical" Margin="5">
-                                <TextBlock Margin="10" HorizontalAlignment="Center">Attributes to add</TextBlock>
-                                <local:AttributesComboBox x:Name="SingleAddCombo" Command="AddItem" Cursor="Hand"/>
-                                <ItemsControl Width="165" x:Name="SingleAddList" />
-                            </StackPanel>
-                            <StackPanel Orientation="Vertical" Margin="5">
-                                <TextBlock Margin="10" HorizontalAlignment="Center">Attributes to remove</TextBlock>
-                                <local:AttributesComboBox x:Name="SingleRemoveCombo" Command="AddItem" Cursor="Hand" />
-                                <ItemsControl Width="165" x:Name="SingleRemoveList" />
-                            </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="5">
+                            <TextBlock Margin="10" HorizontalAlignment="Center">Attributes to remove</TextBlock>
+                            <local:AttributesComboBox x:Name="SingleRemoveCombo" Command="AddItem" Cursor="Hand" />
+                            <ItemsControl Width="165" x:Name="SingleRemoveList" />
                         </StackPanel>
                     </StackPanel>
+                </StackPanel>
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical" Margin="50">
                     <RadioButton GroupName="RunChoice"  x:Name="RunDirectory" Cursor="Hand">Run on directory</RadioButton>
                     <StackPanel Orientation="Vertical" x:Name="DirectoryPanel" Visibility="Visible">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox x:Name="DirectoryPathSelection" Width="350" Margin="5" HorizontalAlignment="Left" TextChanged="RenderAttributeViewerList"></TextBox>
-                            <Button Template="{DynamicResource ButtonTemplate}" Width="200" Click="OpenFolderDialog">Select Folder</Button>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBox Style="{DynamicResource RoundTextBox}" x:Name="DirectoryPathSelection" Width="350" Margin="5" HorizontalAlignment="Left" TextChanged="RenderAttributeViewerList"></TextBox>
+                            <Button Template="{DynamicResource ButtonTemplate}" Width="200" Click="OpenFolderDialog" Margin="10 5 0 5">Select Folder</Button>
                         </StackPanel>
-                        <CheckBox x:Name="RunRecursive" Margin="10" Cursor="Hand">Run recursively.</CheckBox>
-                        <CheckBox x:Name="RunOnCurrent" Margin="10" Cursor="Hand">Run on selected directory.</CheckBox>
-                        <CheckBox x:Name="DirectoryForceModification" Margin="10" Cursor="Hand">Force file modification.</CheckBox>
+                        <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="RunRecursive" Margin="10" Cursor="Hand">Run recursively.</CheckBox>
+                        <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="RunOnCurrent" Margin="10" Cursor="Hand">Run on selected directory.</CheckBox>
+                        <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="DirectoryForceModification" Margin="10" Cursor="Hand">Force file modification.</CheckBox>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <StackPanel Orientation="Vertical" Margin="5">
                                 <TextBlock Margin="10" HorizontalAlignment="Center">Attributes to add</TextBlock>
@@ -70,7 +70,7 @@
                     <Button Template="{DynamicResource ButtonTemplate}" Content="Apply changes"/>
                 </StackPanel>
             </StackPanel>
-            
+
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="25" MinWidth="300" MaxWidth="500">
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Margin="0 0 0 10">Current selection attributes</TextBlock>
                 <ListView x:Name="AttributesPreviewList" Background="LightGray" MinHeight="500" MinWidth="300" MaxHeight="800" />

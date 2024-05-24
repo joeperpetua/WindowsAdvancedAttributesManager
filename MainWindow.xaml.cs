@@ -7,6 +7,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Converters;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -48,8 +49,7 @@ namespace AdvancedAttributesChanger
             bool? result = dialog.ShowDialog();
 
             // Process open folder dialog box results
-            if (result == true)
-            {
+            if (result == true) {
                 // Get the selected folder
                 DirectoryPathSelection.Text = dialog.FolderName;
                 RunDirectory.IsChecked = true;
@@ -117,15 +117,17 @@ namespace AdvancedAttributesChanger
             DockPanel dockPanel = new DockPanel { Width = 155, Margin = new Thickness(5) };
 
             // button is added first so that it takes the rightmost position.
-            Button button = new Button { 
-                Content = "❌", 
-                VerticalAlignment = VerticalAlignment.Center, 
-                Width = 20, 
+            Button button = new Button
+            {
+                Content = "❌",
+                VerticalAlignment = VerticalAlignment.Center,
+                Width = 20,
                 Cursor = Cursors.Hand,
                 Background = Brushes.Transparent,
                 BorderThickness = new Thickness(0),
             };
             button.Click += RemoveItem;
+            button.SetResourceReference(Control.TemplateProperty, "ListButtonTemplate");
             DockPanel.SetDock(button, Dock.Right);
 
             TextBlock textBlock = new TextBlock { Text = text, VerticalAlignment = VerticalAlignment.Center };
