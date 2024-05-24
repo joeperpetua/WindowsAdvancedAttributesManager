@@ -1,5 +1,8 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.VisualBasic;
+using Microsoft.Win32;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -86,17 +89,108 @@ namespace AdvancedAttributesChanger
             }
         }
 
-        static string GetAttributeNames(String filePath) {
-            FileAttributes fileAttrib = File.GetAttributes(filePath);
-            List<string> attributeNames = new List<string>();
+        private void ApplyChanges(object sender, RoutedEventArgs e) {
+            bool? runOnFile = RunFile.IsChecked;
+            if (runOnFile == null) { return; }
+            bool addSuccess = false;
+            bool removeSuccess = false;
 
-            foreach (FileAttributes currentAttrib in Enum.GetValues(fileAttrib.GetType())) {
-                if (fileAttrib.HasFlag(currentAttrib)) {
+            if (runOnFile == true) {
+                String path = FilePathSelection.Text;
+                List<String> attributesToAdd = [];
+                List<String> attributesToRemove = [];
+
+                foreach (DockPanel item in SingleAddList.Items) {
+                    attributesToAdd.Add(((TextBlock)item.Children[1]).Text.ToString());
+                }
+
+                foreach (DockPanel item in SingleRemoveList.Items) {
+                    attributesToRemove.Add(((TextBlock)item.Children[1]).Text.ToString());
+                }
+
+                addSuccess = AddAttributes(path, attributesToAdd);
+                removeSuccess = RemoveAttributes(path, attributesToRemove);
+                RenderAttributeViewerList(FilePathSelection, e);
+            } 
+            else {
+
+            }
+
+            if (addSuccess && removeSuccess)
+            {
+                MessageBox.Show("Changes applied successfully!");
+            }
+            else {
+                MessageBox.Show("Errors happened while trying to apply the changes. Changes applied partially.");
+            }
+
+        }
+
+        static string GetAttributeNames(String filePath) {
+            FileAttributes fileAttribs = File.GetAttributes(filePath);
+            Trace.WriteLine(fileAttribs.ToString());
+            List<String> attributeNames = [];
+
+            foreach (FileAttributes currentAttrib in Enum.GetValues(fileAttribs.GetType())) {
+                if (currentAttrib != FileAttributes.None && fileAttribs.HasFlag(currentAttrib)) {
                     attributeNames.Add(currentAttrib.ToString());
                 }
             }
 
+            if (attributeNames.Count == 0) { attributeNames.Add(FileAttributes.None.ToString()); }
+
             return string.Join(", ", attributeNames);
+        }
+
+        static FileAttributes ParseAttributes(List<String> toAddAttributes) {
+            FileAttributes parsedAttributes = 0;
+
+            foreach (String attrib in toAddAttributes)
+            {
+                if (Enum.TryParse(attrib.Replace(" ", ""), true, out FileAttributes parsedAttrib))
+                {
+                    parsedAttributes |= parsedAttrib;
+                }
+                else
+                {
+                    MessageBox.Show($"Could not parse as attribute. ({attrib})");
+                    throw new Exception();
+                }
+            }
+
+            return parsedAttributes;
+        }
+
+        static bool AddAttributes(String filePath, List<String> toAddAttributes) {
+            FileAttributes currentAttributes = File.GetAttributes(filePath);
+            try {
+                FileAttributes parsedAttributes = ParseAttributes(toAddAttributes);
+                currentAttributes |= parsedAttributes;
+            }
+            catch (Exception) {
+                return false;
+            }
+            
+            File.SetAttributes(filePath, currentAttributes);
+            return true;
+        }
+
+        static bool RemoveAttributes(String filePath, List<String> toRemoveAttributes)
+        {
+            FileAttributes currentAttributes = File.GetAttributes(filePath);
+            FileAttributes newAttributes;
+            try
+            {
+                FileAttributes parsedAttributes = ParseAttributes(toRemoveAttributes);
+                newAttributes = currentAttributes & ~parsedAttributes;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            File.SetAttributes(filePath, newAttributes);
+            return true;
         }
 
         private static StackPanel CreateViewerItem(String filePath, String fileAttributes){

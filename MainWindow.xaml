@@ -67,7 +67,7 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Template="{DynamicResource ButtonTemplate}" Content="Apply changes"/>
+                    <Button Template="{DynamicResource ButtonTemplate}" Click="ApplyChanges" Content="Apply changes"/>
                 </StackPanel>
             </StackPanel>
 
