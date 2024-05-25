@@ -189,17 +189,17 @@
             <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_TEMPORARY">Temporary</ComboBoxItem>
             <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_SPARSE_FILE">Sparse file</ComboBoxItem>
             <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_REPARSE_POINT">Reparse point</ComboBoxItem>
-            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_COMPRESSED">Compressed</ComboBoxItem>
+            <!--<ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_COMPRESSED">Compressed</ComboBoxItem>-->
             <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_OFFLINE">Offline</ComboBoxItem>
             <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_NOT_CONTENT_INDEXED">Not content indexed</ComboBoxItem>
-            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_ENCRYPTED">Encrypted</ComboBoxItem>
+            <!--<ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_ENCRYPTED">Encrypted</ComboBoxItem>
             <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_INTEGRITY_STREAM">Integrity stream</ComboBoxItem>
-            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_VIRTUAL">Virtual</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_VIRTUAL">Virtual</ComboBoxItem>-->
             <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_NO_SCRUB_DATA">No scrub data</ComboBoxItem>
-            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_EA">EA</ComboBoxItem>
+            <!--<ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_EA">EA</ComboBoxItem>
             <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_PINNED">Pinned</ComboBoxItem>
             <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_UNPINNED">Unpinned</ComboBoxItem>
             <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_RECALL_ON_OPEN">Recall on open</ComboBoxItem>
-            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS">Recall on data access</ComboBoxItem>
+            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS">Recall on data access</ComboBoxItem>-->
         </ComboBox> 
 </UserControl>

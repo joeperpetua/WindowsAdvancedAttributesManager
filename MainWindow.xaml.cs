@@ -165,13 +165,16 @@ namespace AdvancedAttributesChanger
             FileAttributes currentAttributes = File.GetAttributes(filePath);
             try {
                 FileAttributes parsedAttributes = ParseAttributes(toAddAttributes);
+                Trace.WriteLine($"Current attributes: {currentAttributes} | Parsed Attributes: {parsedAttributes}");
                 currentAttributes |= parsedAttributes;
+                Trace.WriteLine($"Final Attributes: {currentAttributes}");
             }
             catch (Exception) {
                 return false;
             }
             
             File.SetAttributes(filePath, currentAttributes);
+            Trace.WriteLine($"Setted attributes: {File.GetAttributes(filePath)}");
             return true;
         }
 
@@ -270,8 +273,7 @@ namespace AdvancedAttributesChanger
                 default: break;
             }
 
-            // Reset selection to default value, not needed anymore
-            // comboBox.SelectedIndex = -1;
+            comboBox.SelectedIndex = -1;
         }
 
         private void RemoveItem(object sender, RoutedEventArgs e) {
