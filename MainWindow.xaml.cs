@@ -78,11 +78,17 @@ namespace AdvancedAttributesChanger
 
             if (textBox.Name.Equals("DirectoryPathSelection") && textBoxPath != "") {
                 if (Directory.Exists(textBoxPath) == false) { return; }
-                String[] directoryChildren = Directory.GetFiles(textBoxPath);
+                String[] directoryChildren = Directory.GetFileSystemEntries(textBoxPath);
+                
                 AttributesPreviewList.Items.Clear();
+
+                // Preview information of current working directory
+                StackPanel itemToAdd = CreateViewerItem(textBoxPath, GetAttributeNames(textBoxPath));
+                AttributesPreviewList.Items.Add(itemToAdd);
+
                 foreach (String childrenPath in directoryChildren)
                 {
-                    StackPanel itemToAdd = CreateViewerItem(childrenPath, GetAttributeNames(childrenPath));
+                    itemToAdd = CreateViewerItem(childrenPath, GetAttributeNames(childrenPath));
                     AttributesPreviewList.Items.Add(itemToAdd);
                 }
                 FilePathSelection.Text = "";
@@ -138,7 +144,13 @@ namespace AdvancedAttributesChanger
 
                 addSuccess = true;
                 removeSuccess = true;
-                String[] directoryChildren = Directory.GetFiles(path);
+
+                if (RunOnCurrent.IsChecked == true) {
+                    if (AddAttributes(path, attributesToAdd) == false) { addSuccess = false; }
+                    if (RemoveAttributes(path, attributesToRemove) == false) { removeSuccess = false; }
+                } 
+
+                String[] directoryChildren = Directory.GetFileSystemEntries(path);
                 foreach (String directoryChild in directoryChildren) { 
                     bool resultAdd = AddAttributes(directoryChild, attributesToAdd);
                     bool resultRemove = RemoveAttributes(directoryChild, attributesToRemove);

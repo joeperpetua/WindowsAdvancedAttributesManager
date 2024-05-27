@@ -182,7 +182,7 @@
             <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_READONLY">Read Only</ComboBoxItem>
             <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_HIDDEN">Hidden</ComboBoxItem>
             <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_SYSTEM">System</ComboBoxItem>
-            <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_DIRECTORY">Directory</ComboBoxItem>
+            <!--<ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_DIRECTORY">Directory</ComboBoxItem>-->
             <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_ARCHIVE">Archive</ComboBoxItem>
             <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_DEVICE">Device</ComboBoxItem>
             <ComboBoxItem Cursor="Hand" Tag="FILE_ATTRIBUTE_NORMAL">Normal</ComboBoxItem>

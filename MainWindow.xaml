@@ -50,7 +50,7 @@
                             <Button Template="{DynamicResource ButtonTemplate}" Width="200" Click="OpenFolderDialog" Margin="10 5 0 5">Select Folder</Button>
                         </StackPanel>
                         <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="RunRecursive" Margin="10" Cursor="Hand">Run recursively.</CheckBox>
-                        <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="RunOnCurrent" Margin="10" Cursor="Hand">Run on selected directory.</CheckBox>
+                        <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="RunOnCurrent" Margin="10" Cursor="Hand">Apply to current working directory.</CheckBox>
                         <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="DirectoryForceModification" Margin="10" Cursor="Hand">Force file modification.</CheckBox>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <StackPanel Orientation="Vertical" Margin="5">
