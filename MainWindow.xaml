@@ -73,7 +73,7 @@
 
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="25" MinWidth="300" MaxWidth="500">
                 <TextBlock HorizontalAlignment="Center" FontSize="20" Margin="0 0 0 10">Current selection attributes</TextBlock>
-                <ListView x:Name="AttributesPreviewList" Background="LightGray" MinHeight="500" MinWidth="300" MaxHeight="800" />
+                <ListView x:Name="AttributesPreviewList" Style="{DynamicResource RoundListView}" Background="LightGray" MinHeight="500" MinWidth="300" MaxHeight="800" />
             </StackPanel>
 
         </StackPanel>

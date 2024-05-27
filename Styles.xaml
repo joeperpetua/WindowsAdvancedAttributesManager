@@ -67,6 +67,17 @@
         </Style.Resources>
     </Style>
 
+    <!-- ListView Style -->
+    <Style TargetType="ListView" x:Key="RoundListView">
+        <Setter Property="BorderBrush" Value="{StaticResource All.BorderBrush}" />
+        <Setter Property="Padding" Value="5" />
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="10" />
+            </Style>
+        </Style.Resources>
+    </Style>
+
     <!-- CheckBox Style -->
     <Style x:Key="FocusVisual">
         <Setter Property="Control.Template">
