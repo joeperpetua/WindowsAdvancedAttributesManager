@@ -97,6 +97,10 @@ namespace AdvancedAttributesChanger
 
             if (runOnFile == true) {
                 String path = FilePathSelection.Text;
+                if (File.Exists(path) == false) {
+                    MessageBox.Show($"File does not exist. ({path})");    
+                    return; 
+                }
                 List<String> attributesToAdd = [];
                 List<String> attributesToRemove = [];
 
@@ -113,7 +117,35 @@ namespace AdvancedAttributesChanger
                 RenderAttributeViewerList(FilePathSelection, e);
             } 
             else {
+                String path = DirectoryPathSelection.Text;
+                if (Directory.Exists(path) == false) {
+                    MessageBox.Show($"Folder does not exist. ({path})");    
+                    return; 
+                }
 
+                List<String> attributesToAdd = [];
+                List<String> attributesToRemove = [];
+
+                foreach (DockPanel item in FolderAddList.Items)
+                {
+                    attributesToAdd.Add(((TextBlock)item.Children[1]).Text.ToString());
+                }
+
+                foreach (DockPanel item in FolderRemoveList.Items)
+                {
+                    attributesToRemove.Add(((TextBlock)item.Children[1]).Text.ToString());
+                }
+
+                addSuccess = true;
+                removeSuccess = true;
+                String[] directoryChildren = Directory.GetFiles(path);
+                foreach (String directoryChild in directoryChildren) { 
+                    bool resultAdd = AddAttributes(directoryChild, attributesToAdd);
+                    bool resultRemove = RemoveAttributes(directoryChild, attributesToRemove);
+                    if (resultAdd == false) { addSuccess = false; }
+                    if (resultRemove == false) { removeSuccess = false; }
+                }
+                RenderAttributeViewerList(DirectoryPathSelection, e);
             }
 
             if (addSuccess && removeSuccess)
