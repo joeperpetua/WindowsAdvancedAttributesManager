@@ -70,7 +70,7 @@
     <!-- ListView Style -->
     <Style TargetType="ListView" x:Key="RoundListView">
         <Setter Property="BorderBrush" Value="{StaticResource All.BorderBrush}" />
-        <Setter Property="Padding" Value="5" />
+        <Setter Property="Padding" Value="2" />
         <Style.Resources>
             <Style TargetType="Border">
                 <Setter Property="CornerRadius" Value="10" />

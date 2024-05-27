@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using Microsoft.Win32;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -69,9 +70,11 @@ namespace AdvancedAttributesChanger
 
             if (textBox.Name.Equals("FilePathSelection") && textBoxPath != "") {
                 if (File.Exists(textBoxPath) == false) { return; }
+                RunFile.IsChecked = true;
+                
+                AttributesPreviewList.Items.Clear();
 
                 StackPanel itemToAdd = CreateViewerItem(textBoxPath, GetAttributeNames(textBoxPath));
-                AttributesPreviewList.Items.Clear();
                 AttributesPreviewList.Items.Add(itemToAdd);
                 DirectoryPathSelection.Text = "";
             }
@@ -79,7 +82,8 @@ namespace AdvancedAttributesChanger
             if (textBox.Name.Equals("DirectoryPathSelection") && textBoxPath != "") {
                 if (Directory.Exists(textBoxPath) == false) { return; }
                 String[] directoryChildren = Directory.GetFileSystemEntries(textBoxPath);
-                
+                RunDirectory.IsChecked = true;
+
                 AttributesPreviewList.Items.Clear();
 
                 // Preview information of current working directory
@@ -120,6 +124,17 @@ namespace AdvancedAttributesChanger
 
                 addSuccess = AddAttributes(path, attributesToAdd);
                 removeSuccess = RemoveAttributes(path, attributesToRemove);
+
+                if (FileChangeTime.IsChecked == true)
+                {
+                    try {
+                        File.SetLastWriteTime(path, DateTime.Now);
+                    }
+                    catch (Exception exception) {
+                        MessageBox.Show($"Cannot update modification time for {path}. Stack: {exception}");
+                    }
+                }
+
                 RenderAttributeViewerList(FilePathSelection, e);
             } 
             else {
@@ -151,9 +166,30 @@ namespace AdvancedAttributesChanger
                 } 
 
                 String[] directoryChildren = Directory.GetFileSystemEntries(path);
-                foreach (String directoryChild in directoryChildren) { 
+                if (DirectoryChangeTime.IsChecked == true)
+                {
+                    try {
+                        File.SetLastWriteTime(path, DateTime.Now);
+                    }
+                    catch (Exception exception) {
+                        MessageBox.Show($"Cannot update modification time for {path}. Stack: {exception}");
+                    }
+                }
+
+                foreach (String directoryChild in directoryChildren) {
+                    Trace.WriteLine(directoryChild);
                     bool resultAdd = AddAttributes(directoryChild, attributesToAdd);
                     bool resultRemove = RemoveAttributes(directoryChild, attributesToRemove);
+
+                    if (DirectoryChangeTime.IsChecked == true) {
+                        try {
+                            File.SetLastWriteTime(directoryChild, DateTime.Now);
+                        }
+                        catch (Exception exception) {
+                            MessageBox.Show($"Cannot update modification time for {path}. Stack: {exception}");
+                        }
+                    }
+
                     if (resultAdd == false) { addSuccess = false; }
                     if (resultRemove == false) { removeSuccess = false; }
                 }
@@ -186,19 +222,21 @@ namespace AdvancedAttributesChanger
             return string.Join(", ", attributeNames);
         }
 
-        static FileAttributes ParseAttributes(List<String> toAddAttributes) {
+        static FileAttributes ParseAttributes(List<String> toAddAttributes, bool isDirectory) {
             FileAttributes parsedAttributes = 0;
 
-            foreach (String attrib in toAddAttributes)
-            {
-                if (Enum.TryParse(attrib.Replace(" ", ""), true, out FileAttributes parsedAttrib))
-                {
-                    parsedAttributes |= parsedAttrib;
+            foreach (String attrib in toAddAttributes) {
+                if (attrib == "Temporary" && isDirectory == true) {
+                    Trace.WriteLine("Skipping parse for Temporary when handling a directory.");
                 }
-                else
-                {
-                    MessageBox.Show($"Could not parse as attribute. ({attrib})");
-                    throw new Exception();
+                else {
+                    if (Enum.TryParse(attrib.Replace(" ", ""), true, out FileAttributes parsedAttrib)) {
+                        parsedAttributes |= parsedAttrib;
+                    }
+                    else {
+                        MessageBox.Show($"Could not parse as attribute. ({attrib})");
+                        throw new Exception();
+                    }
                 }
             }
 
@@ -208,7 +246,7 @@ namespace AdvancedAttributesChanger
         static bool AddAttributes(String filePath, List<String> toAddAttributes) {
             FileAttributes currentAttributes = File.GetAttributes(filePath);
             try {
-                FileAttributes parsedAttributes = ParseAttributes(toAddAttributes);
+                FileAttributes parsedAttributes = ParseAttributes(toAddAttributes, currentAttributes.HasFlag(FileAttributes.Directory));
                 Trace.WriteLine($"Current attributes: {currentAttributes} | Parsed Attributes: {parsedAttributes}");
                 currentAttributes |= parsedAttributes;
                 Trace.WriteLine($"Final Attributes: {currentAttributes}");
@@ -216,7 +254,7 @@ namespace AdvancedAttributesChanger
             catch (Exception) {
                 return false;
             }
-            
+            Trace.WriteLine(currentAttributes);
             File.SetAttributes(filePath, currentAttributes);
             Trace.WriteLine($"Setted attributes: {File.GetAttributes(filePath)}");
             return true;
@@ -228,7 +266,7 @@ namespace AdvancedAttributesChanger
             FileAttributes newAttributes;
             try
             {
-                FileAttributes parsedAttributes = ParseAttributes(toRemoveAttributes);
+                FileAttributes parsedAttributes = ParseAttributes(toRemoveAttributes, currentAttributes.HasFlag(FileAttributes.Directory));
                 newAttributes = currentAttributes & ~parsedAttributes;
             }
             catch (Exception)
