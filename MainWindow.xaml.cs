@@ -242,7 +242,7 @@ namespace AdvancedAttributesChanger
 
         private static StackPanel CreateViewerItem(String filePath, String fileAttributes){
             StackPanel stackPanel = new StackPanel { Orientation = Orientation.Horizontal, MinWidth = 290 };
-            TextBlock path = new TextBlock { Text = filePath };
+            TextBox path = new TextBox { Text = filePath, Background = Brushes.Transparent, BorderThickness = new Thickness(0) };
             TextBlock separator = new TextBlock { Text = "=", Margin = new Thickness(5,0,5,0)};
             TextBlock attributes = new TextBlock { Text = fileAttributes };
 
