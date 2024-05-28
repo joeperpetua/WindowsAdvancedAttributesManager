@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -63,10 +64,32 @@ namespace AdvancedAttributesChanger
         }
 
         private void RenderAttributeViewerList(object sender, RoutedEventArgs e) {
-            TextBox textBox = (TextBox)sender;
-            if (textBox == null) { return; }
+            TextBox textBox = new TextBox();
+            string textBoxPath = "";
+            bool? isRecursive = false;
+            bool? includeDir = false;
+            if (sender is TextBox)
+            {
+                textBox = (TextBox)sender;
+                if (textBox == null) { return; }
+                textBoxPath = textBox.Text.ToString();
+            }
+            if (sender is CheckBox)
+            {
+                Trace.WriteLine("checkbox");
+                CheckBox checkBox = (CheckBox)sender;
+                if (checkBox == null) { return; }
+                
+                if (checkBox.Name.Equals("RunRecursive"))
+                    isRecursive = checkBox.IsChecked;
+                if (checkBox.Name.Equals("includeDir"))
+                    includeDir = checkBox.IsChecked;
+
+                textBox = DirectoryPathSelection;
+                textBoxPath = DirectoryPathSelection.Text.ToString();
+            }
+
             Trace.WriteLine(textBox.Name);
-            String textBoxPath = textBox.Text.ToString();
 
             if (textBox.Name.Equals("FilePathSelection") && textBoxPath != "") {
                 if (File.Exists(textBoxPath) == false) { return; }
@@ -81,18 +104,19 @@ namespace AdvancedAttributesChanger
 
             if (textBox.Name.Equals("DirectoryPathSelection") && textBoxPath != "") {
                 if (Directory.Exists(textBoxPath) == false) { return; }
-                String[] directoryChildren = Directory.GetFileSystemEntries(textBoxPath);
+                //String[] directoryChildren = Directory.GetFileSystemEntries(textBoxPath);
+                IEnumerable<String> directoryChildren = GetChildren(textBoxPath, RunRecursive.IsChecked, IncludeDir.IsChecked);
                 RunDirectory.IsChecked = true;
 
                 AttributesPreviewList.Items.Clear();
 
                 // Preview information of current working directory
-                StackPanel itemToAdd = CreateViewerItem(textBoxPath, GetAttributeNames(textBoxPath));
-                AttributesPreviewList.Items.Add(itemToAdd);
+                //StackPanel itemToAdd = CreateViewerItem(textBoxPath, GetAttributeNames(textBoxPath));
+                //AttributesPreviewList.Items.Add(itemToAdd);
 
                 foreach (String childrenPath in directoryChildren)
                 {
-                    itemToAdd = CreateViewerItem(childrenPath, GetAttributeNames(childrenPath));
+                    StackPanel itemToAdd = CreateViewerItem(childrenPath, GetAttributeNames(childrenPath));
                     AttributesPreviewList.Items.Add(itemToAdd);
                 }
                 FilePathSelection.Text = "";
@@ -160,12 +184,12 @@ namespace AdvancedAttributesChanger
                 addSuccess = true;
                 removeSuccess = true;
 
-                if (RunOnCurrent.IsChecked == true) {
-                    if (AddAttributes(path, attributesToAdd) == false) { addSuccess = false; }
-                    if (RemoveAttributes(path, attributesToRemove) == false) { removeSuccess = false; }
-                } 
+                //if (IncludeDir.IsChecked == true) {
+                //    if (AddAttributes(path, attributesToAdd) == false) { addSuccess = false; }
+                //    if (RemoveAttributes(path, attributesToRemove) == false) { removeSuccess = false; }
+                //} 
 
-                String[] directoryChildren = Directory.GetFileSystemEntries(path);
+                IEnumerable<string> directoryChildren = GetChildren(path, RunRecursive.IsChecked, IncludeDir.IsChecked);
                 if (DirectoryChangeTime.IsChecked == true)
                 {
                     try {
@@ -204,6 +228,59 @@ namespace AdvancedAttributesChanger
                 MessageBox.Show("Errors happened while trying to apply the changes. Changes applied partially.");
             }
 
+        }
+
+        // Original from https://stackoverflow.com/a/929418/11960264
+        static IEnumerable<string> GetChildren(string path, bool? isRecursive, bool? includeDirs) {
+            Trace.WriteLine($"Path: {path} | Recursive: {isRecursive} | Dirs: {includeDirs}");
+            Queue<string> queue = new Queue<string>();
+            queue.Enqueue(path);
+            while (queue.Count > 0)
+            {
+                path = queue.Dequeue();
+                if (isRecursive == true)
+                {
+                    try
+                    {
+                        foreach (string subDir in Directory.GetDirectories(path))
+                        {
+                            queue.Enqueue(subDir);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.Error.WriteLine(ex);
+                    }
+                }
+
+                String[]? files = null;
+                List<String>? fileList = [];
+
+                try
+                {
+                    if (includeDirs == true)
+                    {
+                        fileList.Add(path);
+                    }
+                    foreach (var file in Directory.GetFiles(path))
+                    {
+                        fileList.Add(file);
+                    }
+                    files = fileList.ToArray<String>();
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine(ex);
+                }
+                
+                if (files != null)
+                {
+                    for (int i = 0; i < files.Length; i++)
+                    {
+                        yield return files[i];
+                    }
+                }
+            }
         }
 
         static string GetAttributeNames(String filePath) {

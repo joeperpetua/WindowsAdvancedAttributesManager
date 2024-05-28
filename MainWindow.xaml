@@ -49,8 +49,8 @@
                             <TextBox Style="{DynamicResource RoundTextBox}" x:Name="DirectoryPathSelection" Width="350" Margin="5" HorizontalAlignment="Left" TextChanged="RenderAttributeViewerList"></TextBox>
                             <Button Template="{DynamicResource ButtonTemplate}" Width="200" Click="OpenFolderDialog" Margin="10 5 0 5">Select Folder</Button>
                         </StackPanel>
-                        <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="RunRecursive" Margin="10" Cursor="Hand">Run recursively</CheckBox>
-                        <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="RunOnCurrent" Margin="10" Cursor="Hand">Apply to current working directory</CheckBox>
+                        <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="RunRecursive" Margin="10" Cursor="Hand" Click="RenderAttributeViewerList">Run recursively</CheckBox>
+                        <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="IncludeDir" Margin="10" Cursor="Hand" Click="RenderAttributeViewerList">Include current/children directories</CheckBox>
                         <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="DirectoryChangeTime" Margin="10" Cursor="Hand">Update modification time</CheckBox>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <StackPanel Orientation="Vertical" Margin="5">
