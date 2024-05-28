@@ -184,21 +184,7 @@ namespace AdvancedAttributesChanger
                 addSuccess = true;
                 removeSuccess = true;
 
-                //if (IncludeDir.IsChecked == true) {
-                //    if (AddAttributes(path, attributesToAdd) == false) { addSuccess = false; }
-                //    if (RemoveAttributes(path, attributesToRemove) == false) { removeSuccess = false; }
-                //} 
-
                 IEnumerable<string> directoryChildren = GetChildren(path, RunRecursive.IsChecked, IncludeDir.IsChecked);
-                if (DirectoryChangeTime.IsChecked == true)
-                {
-                    try {
-                        File.SetLastWriteTime(path, DateTime.Now);
-                    }
-                    catch (Exception exception) {
-                        MessageBox.Show($"Cannot update modification time for {path}. Stack: {exception}");
-                    }
-                }
 
                 foreach (String directoryChild in directoryChildren) {
                     Trace.WriteLine(directoryChild);
@@ -206,10 +192,16 @@ namespace AdvancedAttributesChanger
                     bool resultRemove = RemoveAttributes(directoryChild, attributesToRemove);
 
                     if (DirectoryChangeTime.IsChecked == true) {
-                        try {
+                        try
+                        {
                             File.SetLastWriteTime(directoryChild, DateTime.Now);
                         }
-                        catch (Exception exception) {
+                        catch (UnauthorizedAccessException) 
+                        {
+                            MessageBox.Show($"Cannot update modification time for {path} due to a lack of permissions.");
+                        }
+                        catch (Exception exception)
+                        {
                             MessageBox.Show($"Cannot update modification time for {path}. Stack: {exception}");
                         }
                     }
