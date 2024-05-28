@@ -62,8 +62,13 @@ namespace AdvancedAttributesChanger
 
             e.Handled = true;
         }
-
-        private void RenderAttributeViewerList(object sender, RoutedEventArgs e) {
+        private async void Path_Changed(object sender, RoutedEventArgs e)
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            await RenderAttributeViewerList(sender, e);
+            Mouse.OverrideCursor = Cursors.Arrow;
+        }
+        private async Task RenderAttributeViewerList(object sender, RoutedEventArgs e) {
             TextBox textBox = new TextBox();
             string textBoxPath = "";
             bool? isRecursive = false;
@@ -104,26 +109,26 @@ namespace AdvancedAttributesChanger
 
             if (textBox.Name.Equals("DirectoryPathSelection") && textBoxPath != "") {
                 if (Directory.Exists(textBoxPath) == false) { return; }
-                //String[] directoryChildren = Directory.GetFileSystemEntries(textBoxPath);
-                IEnumerable<String> directoryChildren = GetChildren(textBoxPath, RunRecursive.IsChecked, IncludeDir.IsChecked);
+          
                 RunDirectory.IsChecked = true;
-
                 AttributesPreviewList.Items.Clear();
-
-                // Preview information of current working directory
-                //StackPanel itemToAdd = CreateViewerItem(textBoxPath, GetAttributeNames(textBoxPath));
-                //AttributesPreviewList.Items.Add(itemToAdd);
-
-                foreach (String childrenPath in directoryChildren)
+                
+                await foreach (String directoryChild in GetChildren(textBoxPath, RunRecursive.IsChecked, IncludeDir.IsChecked))
                 {
-                    StackPanel itemToAdd = CreateViewerItem(childrenPath, GetAttributeNames(childrenPath));
+                    StackPanel itemToAdd = CreateViewerItem(directoryChild, GetAttributeNames(directoryChild));
                     AttributesPreviewList.Items.Add(itemToAdd);
                 }
                 FilePathSelection.Text = "";
             }
         }
 
-        private void ApplyChanges(object sender, RoutedEventArgs e) {
+        private async void ApplyChanges_Click(object sender, RoutedEventArgs e)
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            await ApplyChanges(sender, e);
+            Mouse.OverrideCursor = Cursors.Arrow;
+        }
+        private async Task ApplyChanges(object sender, RoutedEventArgs e) {
             bool? runOnFile = RunFile.IsChecked;
             if (runOnFile == null) { return; }
             bool addSuccess = false;
@@ -159,7 +164,7 @@ namespace AdvancedAttributesChanger
                     }
                 }
 
-                RenderAttributeViewerList(FilePathSelection, e);
+                await RenderAttributeViewerList(FilePathSelection, e);
             } 
             else {
                 String path = DirectoryPathSelection.Text;
@@ -184,9 +189,8 @@ namespace AdvancedAttributesChanger
                 addSuccess = true;
                 removeSuccess = true;
 
-                IEnumerable<string> directoryChildren = GetChildren(path, RunRecursive.IsChecked, IncludeDir.IsChecked);
-
-                foreach (String directoryChild in directoryChildren) {
+                await foreach (String directoryChild in GetChildren(path, RunRecursive.IsChecked, IncludeDir.IsChecked))
+                {
                     Trace.WriteLine(directoryChild);
                     bool resultAdd = AddAttributes(directoryChild, attributesToAdd);
                     bool resultRemove = RemoveAttributes(directoryChild, attributesToRemove);
@@ -209,7 +213,7 @@ namespace AdvancedAttributesChanger
                     if (resultAdd == false) { addSuccess = false; }
                     if (resultRemove == false) { removeSuccess = false; }
                 }
-                RenderAttributeViewerList(DirectoryPathSelection, e);
+                await RenderAttributeViewerList(DirectoryPathSelection, e);
             }
 
             if (addSuccess && removeSuccess)
@@ -223,7 +227,7 @@ namespace AdvancedAttributesChanger
         }
 
         // Original from https://stackoverflow.com/a/929418/11960264
-        static IEnumerable<string> GetChildren(string path, bool? isRecursive, bool? includeDirs) {
+        private static async IAsyncEnumerable<string> GetChildren(string path, bool? isRecursive, bool? includeDirs) {
             Trace.WriteLine($"Path: {path} | Recursive: {isRecursive} | Dirs: {includeDirs}");
             Queue<string> queue = new Queue<string>();
             queue.Enqueue(path);
@@ -234,7 +238,8 @@ namespace AdvancedAttributesChanger
                 {
                     try
                     {
-                        foreach (string subDir in Directory.GetDirectories(path))
+                        var subDirs = await Task.Run(() => Directory.GetDirectories(path));
+                        foreach (string subDir in subDirs)
                         {
                             queue.Enqueue(subDir);
                         }
@@ -254,7 +259,8 @@ namespace AdvancedAttributesChanger
                     {
                         fileList.Add(path);
                     }
-                    foreach (var file in Directory.GetFiles(path))
+                    var filesInDir = await Task.Run(() => Directory.GetFiles(path));
+                    foreach (var file in filesInDir)
                     {
                         fileList.Add(file);
                     }

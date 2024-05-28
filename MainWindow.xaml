@@ -23,7 +23,7 @@
                     <RadioButton GroupName="RunChoice" x:Name="RunFile" IsChecked="True" Cursor="Hand">Run on single file</RadioButton>
                     <StackPanel Orientation="Vertical" x:Name="SingleFilePanel">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBox Style="{DynamicResource RoundTextBox}" x:Name="FilePathSelection" Width="350" Margin="5" HorizontalAlignment="Left" TextChanged="RenderAttributeViewerList"></TextBox>
+                            <TextBox Style="{DynamicResource RoundTextBox}" x:Name="FilePathSelection" Width="350" Margin="5" HorizontalAlignment="Left" TextChanged="Path_Changed"></TextBox>
                         <Button Template="{DynamicResource ButtonTemplate}" Width="200" Click="OpenFileDialog" Margin="10 5 0 5">Select File</Button>
                     </StackPanel>
                     <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="FileChangeTime" Margin="10" Cursor="Hand">Update modification time</CheckBox>
@@ -46,11 +46,11 @@
                     <RadioButton GroupName="RunChoice"  x:Name="RunDirectory" Cursor="Hand">Run on directory</RadioButton>
                     <StackPanel Orientation="Vertical" x:Name="DirectoryPanel" Visibility="Visible">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBox Style="{DynamicResource RoundTextBox}" x:Name="DirectoryPathSelection" Width="350" Margin="5" HorizontalAlignment="Left" TextChanged="RenderAttributeViewerList"></TextBox>
+                            <TextBox Style="{DynamicResource RoundTextBox}" x:Name="DirectoryPathSelection" Width="350" Margin="5" HorizontalAlignment="Left" TextChanged="Path_Changed"></TextBox>
                             <Button Template="{DynamicResource ButtonTemplate}" Width="200" Click="OpenFolderDialog" Margin="10 5 0 5">Select Folder</Button>
                         </StackPanel>
-                        <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="RunRecursive" Margin="10" Cursor="Hand" Click="RenderAttributeViewerList">Run recursively</CheckBox>
-                        <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="IncludeDir" Margin="10" Cursor="Hand" Click="RenderAttributeViewerList">Include current/children directories</CheckBox>
+                        <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="RunRecursive" Margin="10" Cursor="Hand" Click="Path_Changed">Run recursively</CheckBox>
+                        <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="IncludeDir" Margin="10" Cursor="Hand" Click="Path_Changed">Include current/children directories</CheckBox>
                         <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="DirectoryChangeTime" Margin="10" Cursor="Hand">Update modification time</CheckBox>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <StackPanel Orientation="Vertical" Margin="5">
@@ -67,7 +67,7 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Template="{DynamicResource ButtonTemplate}" Click="ApplyChanges" Content="Apply changes"/>
+                    <Button Template="{DynamicResource ButtonTemplate}" Click="ApplyChanges_Click" Content="Apply changes"/>
                 </StackPanel>
             </StackPanel>
 
