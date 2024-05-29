@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AdvancedAttributesChanger"
         mc:Ignorable="d"
-        Title="Windows Advanced Attributes Changer" Height="768" Width="1300">
+        Title="Windows Advanced Attributes Changer" Height="800" Width="1400"
+        WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <ResourceDictionary>
