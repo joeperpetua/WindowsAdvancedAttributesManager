@@ -567,7 +567,7 @@ namespace AdvancedAttributesChanger
                 File.WriteAllText(filename, fileHeaders + fileContent);
                 ProgressDialog progressDialog = new ProgressDialog();
                 progressDialog.UpdateMessage("Export finised!", $"File list exported as tab delimited .CSV file.\n({filename})", 0, 0, 0);
-                progressDialog.ShowDialog()
+                progressDialog.ShowDialog();
             }
         }
     }
