@@ -68,13 +68,15 @@ namespace AdvancedAttributesChanger
             Mouse.OverrideCursor = Cursors.Wait;
 
             ProgressDialog progressDialog = new ProgressDialog();
+            progressDialog.UpdateMessage("Preview List", "Getting elements from file system...", 0, 0, 0);
             progressDialog.Show();
-            progressDialog.UpdateMessage("Preview List", "Getting elements from file system...");
 
             await RenderAttributeViewerList(sender, e, progressDialog);
 
             progressDialog.Close();
-            Mouse.OverrideCursor = Cursors.Arrow;
+            Mouse.OverrideCursor = null;
+            this.Activate();
+            this.Focus();
         }
         private async Task RenderAttributeViewerList(object sender, RoutedEventArgs e, ProgressDialog progressDialog) {
             TextBox textBox = new TextBox();
@@ -120,14 +122,16 @@ namespace AdvancedAttributesChanger
           
                 RunDirectory.IsChecked = true;
                 AttributesPreviewList.Items.Clear();
+                long processedItems = 0;
+                long start = DateTimeOffset.Now.ToUnixTimeSeconds();
 
                 // List<string> filesToProcess = await GetChildren(textBoxPath, RunRecursive.IsChecked, IncludeDir.IsChecked);
 
-                progressDialog.UpdateMessage("Preview List", "Generating preview list...");
                 await foreach (String directoryChild in GetChildren(textBoxPath, RunRecursive.IsChecked, IncludeDir.IsChecked))
                 {
                     StackPanel itemToAdd = CreateViewerItem(directoryChild, GetAttributeNames(directoryChild));
                     AttributesPreviewList.Items.Add(itemToAdd);
+                    progressDialog.UpdateMessage("Preview List", "Generating preview list...", ++processedItems, start, DateTimeOffset.Now.ToUnixTimeSeconds());
                 }
 
                 FilePathSelection.Text = "";
@@ -139,14 +143,16 @@ namespace AdvancedAttributesChanger
             Mouse.OverrideCursor = Cursors.Wait;
 
             ProgressDialog progressDialog = new ProgressDialog();
+            progressDialog.UpdateMessage("File Modification", "Getting elements from file system...", 0, 0, 0);
             progressDialog.Show();
-            progressDialog.UpdateMessage("File Modification", "Getting elements from file system...");
 
 
             await ApplyChanges(sender, e, progressDialog);
             
             progressDialog.Close();
-            Mouse.OverrideCursor = Cursors.Arrow;
+            Mouse.OverrideCursor = null;
+            this.Activate();
+            this.Focus();
         }
         private async Task ApplyChanges(object sender, RoutedEventArgs e, ProgressDialog progressDialog) {
             bool? runOnFile = RunFile.IsChecked;
@@ -171,7 +177,7 @@ namespace AdvancedAttributesChanger
                     attributesToRemove.Add(((TextBlock)item.Children[1]).Text.ToString());
                 }
 
-                progressDialog.UpdateMessage("File Modification", "Applying attributes modification...");
+                progressDialog.UpdateMessage("File Modification", "Applying attributes modification...", 0, 0, 0);
 
                 addSuccess = AddAttributes(path, attributesToAdd);
                 removeSuccess = RemoveAttributes(path, attributesToRemove);
@@ -213,7 +219,9 @@ namespace AdvancedAttributesChanger
 
                 //List<string> filesToProcess = await GetChildren(path, RunRecursive.IsChecked, IncludeDir.IsChecked);
 
-                progressDialog.UpdateMessage("File Modification", "Applying attributes modification...");
+                progressDialog.UpdateMessage("File Modification", "Applying attributes modification...", 0, 0, 0);
+                long processedItems = 0;
+                long start = DateTimeOffset.Now.ToUnixTimeSeconds();
                 await foreach (String directoryChild in GetChildren(path, RunRecursive.IsChecked, IncludeDir.IsChecked))
                 {
                     bool resultAdd = AddAttributes(directoryChild, attributesToAdd);
@@ -237,6 +245,8 @@ namespace AdvancedAttributesChanger
 
                     if (resultAdd == false) { addSuccess = false; }
                     if (resultRemove == false) { removeSuccess = false; }
+
+                    progressDialog.UpdateMessage("File Modification", "Applying attributes modification...", ++processedItems, start, DateTimeOffset.Now.ToUnixTimeSeconds());
                 }
 
                 await RenderAttributeViewerList(DirectoryPathSelection, e, progressDialog);
@@ -247,7 +257,7 @@ namespace AdvancedAttributesChanger
                 MessageBox.Show("Changes applied successfully!");
             }
             else {
-                MessageBox.Show("Errors happened while trying to apply the changes. Changes applied partially.");
+                MessageBox.Show("Errors happened while trying to apply the changes.\n\nChanges applied partially.");
             }
 
         }
@@ -530,6 +540,35 @@ namespace AdvancedAttributesChanger
             }
 
             return alreadyInList;
+        }
+
+        private void Download_Preview(object sender, RoutedEventArgs e) {
+            Microsoft.Win32.SaveFileDialog saveDialog = new Microsoft.Win32.SaveFileDialog();
+            saveDialog.FileName = "Preview_Export";
+            saveDialog.DefaultExt = ".csv";
+            saveDialog.Filter = "CSV Files | *.csv";
+
+            Nullable<bool> result = saveDialog.ShowDialog();
+
+            // Process save file dialog box results
+            if (result == true)
+            {
+                // Save document
+                string filename = saveDialog.FileName;
+                String fileHeaders = "Path\tAttributes\n";
+                String fileContent = "";
+                foreach (StackPanel item in AttributesPreviewList.Items)
+                {
+                    TextBox path = (TextBox)item.Children[0];
+                    TextBlock attributes = (TextBlock)item.Children[2];
+                    fileContent += $"{path.Text}\t{attributes.Text}\n";
+                }
+
+                File.WriteAllText(filename, fileHeaders + fileContent);
+                ProgressDialog progressDialog = new ProgressDialog();
+                progressDialog.UpdateMessage("Export finised!", $"File list exported as tab delimited .CSV file.\n({filename})", 0, 0, 0);
+                progressDialog.ShowDialog()
+            }
         }
     }
 }

@@ -19,7 +19,7 @@
 
     <!-- Button Style -->
     <ControlTemplate x:Key="ButtonTemplate" TargetType="{x:Type ButtonBase}">
-        <Border x:Name="border" Cursor="Hand" Padding="10" CornerRadius="20" Background="White" BorderBrush="{StaticResource All.DarkBorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+        <Border x:Name="border" Cursor="Hand" Padding="{TemplateBinding Padding}" CornerRadius="20" Background="White" BorderBrush="{StaticResource All.DarkBorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
             <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
         </Border>
         <ControlTemplate.Triggers>

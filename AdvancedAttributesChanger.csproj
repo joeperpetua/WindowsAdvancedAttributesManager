@@ -8,4 +8,7 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Resource Include="waac.ico" />
+  </ItemGroup>
 </Project>

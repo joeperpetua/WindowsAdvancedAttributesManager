@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:AdvancedAttributesChanger"
         mc:Ignorable="d"
         Title="Windows Advanced Attributes Changer" Height="800" Width="1400"
+        Icon="waac.ico"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
@@ -25,7 +26,7 @@
                     <StackPanel Orientation="Vertical" x:Name="SingleFilePanel">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBox Style="{DynamicResource RoundTextBox}" x:Name="FilePathSelection" Width="350" Margin="5" HorizontalAlignment="Left" TextChanged="Path_Changed"></TextBox>
-                        <Button Template="{DynamicResource ButtonTemplate}" Width="200" Click="OpenFileDialog" Margin="10 5 0 5">Select File</Button>
+                        <Button Template="{DynamicResource ButtonTemplate}" Padding="5" Width="200" Click="OpenFileDialog" Margin="10 5 0 5">Select File</Button>
                     </StackPanel>
                     <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="FileChangeTime" Margin="10" Cursor="Hand">Update modification time</CheckBox>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -48,7 +49,7 @@
                     <StackPanel Orientation="Vertical" x:Name="DirectoryPanel" Visibility="Visible">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBox Style="{DynamicResource RoundTextBox}" x:Name="DirectoryPathSelection" Width="350" Margin="5" HorizontalAlignment="Left" TextChanged="Path_Changed"></TextBox>
-                            <Button Template="{DynamicResource ButtonTemplate}" Width="200" Click="OpenFolderDialog" Margin="10 5 0 5">Select Folder</Button>
+                            <Button Template="{DynamicResource ButtonTemplate}" Padding="5" Width="200" Click="OpenFolderDialog" Margin="10 5 0 5">Select Folder</Button>
                         </StackPanel>
                         <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="RunRecursive" Margin="10" Cursor="Hand" Click="Path_Changed">Run recursively</CheckBox>
                         <CheckBox Style="{DynamicResource CheckBoxStyle}" x:Name="IncludeDir" Margin="10" Cursor="Hand" Click="Path_Changed">Include current/children directories</CheckBox>
@@ -68,13 +69,16 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Template="{DynamicResource ButtonTemplate}" Click="ApplyChanges_Click" Content="Apply changes"/>
+                    <Button Template="{DynamicResource ButtonTemplate}" Padding="5" Click="ApplyChanges_Click" Content="Apply changes"/>
                 </StackPanel>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="25" MinWidth="300" MaxWidth="500">
-                <TextBlock HorizontalAlignment="Center" FontSize="20" Margin="0 0 0 10">Current selection attributes</TextBlock>
-                <ListView x:Name="AttributesPreviewList" Style="{DynamicResource RoundListView}" Background="LightGray" MinHeight="500" MinWidth="300" MaxHeight="800" />
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 0 0 10">
+                <TextBlock HorizontalAlignment="Center" FontSize="20" Margin="0 0 10 0">Current selection attributes</TextBlock>
+                <Button Template="{DynamicResource ListButtonTemplate}" Click="Download_Preview" Content="⤓" Width="40" FontSize="20" Padding="1" ToolTip="Click to donwload preview list as CSV"/>
+              </StackPanel>
+                <ListView x:Name="AttributesPreviewList" Style="{DynamicResource RoundListView}" Background="LightGray" MinHeight="500" MinWidth="300" MaxHeight="650" />
             </StackPanel>
 
         </StackPanel>

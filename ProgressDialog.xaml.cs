@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Reflection.PortableExecutable;
+using System.Windows;
 
 namespace AdvancedAttributesChanger
 {
@@ -9,10 +10,14 @@ namespace AdvancedAttributesChanger
             InitializeComponent();
         }
 
-        public void UpdateMessage(string title, string message)
+        public void UpdateMessage(string header, string message, long items, long start, long seconds)
         {
-            Title.Text = title;
+            Header.Text = header;
             Message.Text = message;
+            if (items > 0) {
+                long elapsed = seconds - start == 0 ? 1 : seconds - start;
+                Items.Text = $"Processed items: {items.ToString()} ({items / elapsed}/s)";
+            }
         }
     }
 }
