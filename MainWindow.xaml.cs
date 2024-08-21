@@ -578,42 +578,79 @@ namespace AdvancedAttributesChanger
             // Process save file dialog box results
             if (result == true)
             {
+                int fileCount = AttributesPreviewList.Items.Count;
                 Mouse.OverrideCursor = Cursors.Wait;
 
                 ProgressDialog progressDialog = new ProgressDialog();
-                progressDialog.Owner = this;
-                progressDialog.UpdateMessage("Exporting preview...", $"This could take a few seconds/minutes depending on the amount of files to process. ({AttributesPreviewList.Items.Count})");
+
                 progressDialog.Show();
-                String filename = await WriteToFile(saveDialog.FileName);
-                progressDialog.UpdateMessage("Export finised!", $"File list exported as tab delimited .CSV file.\n({filename})", spin: false, allowClose: true);
+                progressDialog.UpdateMessage(
+                    "Exporting preview...", 
+                    $"This could take a few seconds/minutes depending on the amount of files to process. ({fileCount})"
+                );
+
+                String filename = await WriteToFileInChunks(saveDialog.FileName, 1000, progressDialog);
+
+                progressDialog.UpdateMessage(
+                    "Export finised!", 
+                    $"File list exported as tab delimited .CSV file.\n({filename})",
+                    spin: false, 
+                    allowClose: true
+                );
                 
                 Mouse.OverrideCursor = null;
-                this.Activate();
-                this.Focus();
             }
         }
 
-        private Task<String> WriteToFile(String filename) {
+        private async Task<String> WriteToFileInChunks(string filename, int chunkSize, ProgressDialog progressDialog)
+        {
             Trace.WriteLine($"Saving file to {filename}");
-            String fileHeaders = "Path\tAttributes\n";
-            String fileContent = "";
-            foreach (StackPanel item in AttributesPreviewList.Items)
-            {
-                TextBox path = (TextBox)item.Children[0];
-                TextBlock attributes = (TextBlock)item.Children[2];
-                fileContent += $"{path.Text}\t{attributes.Text}\n";
-            }
+            string fileHeaders = "Path\tAttributes\n";
 
             try
             {
-                File.WriteAllText(filename, fileHeaders + fileContent);
+                using (StreamWriter writer = new StreamWriter(filename, append: false))
+                {
+                    await writer.WriteLineAsync(fileHeaders);
+
+                    int totalItems = AttributesPreviewList.Items.Count;
+                    int processedItems = 0;
+
+                    while (processedItems < totalItems)
+                    {
+                        StringBuilder chunkData = new StringBuilder();
+
+                        int chunkEnd = Math.Min(processedItems + chunkSize, totalItems);
+
+                        for (int i = processedItems; i < chunkEnd; i++)
+                        {
+                            StackPanel item = (StackPanel)AttributesPreviewList.Items[i];
+                            TextBox path = (TextBox)item.Children[0];
+                            TextBlock attributes = (TextBlock)item.Children[2];
+                            chunkData.AppendLine($"{path.Text}\t{attributes.Text}");
+                        }
+
+                        await writer.WriteAsync(chunkData.ToString());
+                        await writer.FlushAsync();
+
+                        processedItems = chunkEnd;
+
+                        progressDialog.UpdateMessage(
+                            "Exporting preview...",
+                            $"Processed {processedItems} of {totalItems} items."
+                        );
+
+                        // Yield control back to the UI to avoid freezing
+                        await Task.Delay(10);
+                    }
+                }
             }
             catch (Exception error)
             {
                 throw new Exception("Failed to write data to file.", error);
             }
 
-            return Task.FromResult(filename);
-        } 
+            return filename;
+        }
     }
 }
