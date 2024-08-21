@@ -28,6 +28,13 @@ namespace AdvancedAttributesChanger
             SingleAddCombo.Command = AddItem;
         }
 
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            AboutDialog aboutDialog = new AboutDialog();
+            aboutDialog.Owner = this;
+            aboutDialog.Show();
+        }
+
         private void OpenFileDialog(object sender, RoutedEventArgs e) {
             // Configure open file dialog box
             Microsoft.Win32.OpenFileDialog dialog = new();
@@ -68,6 +75,7 @@ namespace AdvancedAttributesChanger
             Mouse.OverrideCursor = Cursors.Wait;
 
             ProgressDialog progressDialog = new ProgressDialog();
+            progressDialog.Owner = this;
             progressDialog.UpdateMessage("Preview List", "Getting elements from file system...");
             progressDialog.Show();
 
@@ -75,8 +83,6 @@ namespace AdvancedAttributesChanger
 
             progressDialog.Close();
             Mouse.OverrideCursor = null;
-            this.Activate();
-            this.Focus();
         }
         private async Task RenderAttributeViewerList(object sender, RoutedEventArgs e, ProgressDialog progressDialog) {
             TextBox textBox = new TextBox();
@@ -143,6 +149,7 @@ namespace AdvancedAttributesChanger
             Mouse.OverrideCursor = Cursors.Wait;
 
             ProgressDialog progressDialog = new ProgressDialog();
+            progressDialog.Owner = this;
             progressDialog.UpdateMessage("File Modification", "Getting elements from file system...");
             progressDialog.Show();
 
@@ -573,6 +580,7 @@ namespace AdvancedAttributesChanger
                 Mouse.OverrideCursor = Cursors.Wait;
 
                 ProgressDialog progressDialog = new ProgressDialog();
+                progressDialog.Owner = this;
 
                 progressDialog.Show();
                 progressDialog.UpdateMessage(
