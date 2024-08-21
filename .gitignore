@@ -6,6 +6,7 @@
 *.user
 *.sln.docstates
 .vs/
+dist_path.conf
 
 # Build results
 [Dd]ebug/
