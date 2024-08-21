@@ -149,7 +149,6 @@ namespace AdvancedAttributesChanger
 
             await ApplyChanges(sender, e, progressDialog);
             
-            // progressDialog.Close();
             Mouse.OverrideCursor = null;
             this.Activate();
             this.Focus();
@@ -261,7 +260,6 @@ namespace AdvancedAttributesChanger
 
             if (addSuccess && removeSuccess)
             {
-                //MessageBox.Show("Changes applied successfully!");
                 progressDialog.UpdateMessage(
                     "File Modification", 
                     "Changes applied successfully!", 
@@ -273,7 +271,6 @@ namespace AdvancedAttributesChanger
                 );
             }
             else {
-                //MessageBox.Show("Errors happened while trying to apply the changes.\n\nChanges applied partially.");
                 progressDialog.UpdateMessage(
                     "File Modification",
                     "Errors happened while trying to apply the changes.\n\nChanges applied partially.",
@@ -378,7 +375,7 @@ namespace AdvancedAttributesChanger
 
         static string GetAttributeNames(String filePath) {
             FileAttributes fileAttribs = File.GetAttributes(filePath);
-            Trace.WriteLine(fileAttribs.ToString());
+            // Trace.WriteLine(fileAttribs.ToString());
             List<String> attributeNames = [];
 
             foreach (FileAttributes currentAttrib in Enum.GetValues(fileAttribs.GetType())) {
@@ -417,16 +414,13 @@ namespace AdvancedAttributesChanger
             FileAttributes currentAttributes = File.GetAttributes(filePath);
             try {
                 FileAttributes parsedAttributes = ParseAttributes(toAddAttributes, currentAttributes.HasFlag(FileAttributes.Directory));
-                Trace.WriteLine($"Current attributes: {currentAttributes} | Parsed Attributes: {parsedAttributes}");
                 currentAttributes |= parsedAttributes;
-                Trace.WriteLine($"Final Attributes: {currentAttributes}");
             }
             catch (Exception) {
                 return false;
             }
             Trace.WriteLine(currentAttributes);
             File.SetAttributes(filePath, currentAttributes);
-            Trace.WriteLine($"Setted attributes: {File.GetAttributes(filePath)}");
             return true;
         }
 
@@ -586,7 +580,7 @@ namespace AdvancedAttributesChanger
                 progressDialog.Show();
                 progressDialog.UpdateMessage(
                     "Exporting preview...", 
-                    $"This could take a few seconds/minutes depending on the amount of files to process. ({fileCount})"
+                    $"This could take a few seconds/minutes\ndepending on the amount of files to process. ({fileCount})"
                 );
 
                 String filename = await WriteToFileInChunks(saveDialog.FileName, 1000, progressDialog);
