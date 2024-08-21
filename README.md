@@ -42,9 +42,10 @@ The application will look for the latest release upon openning and will perform 
 
 ## Screenshots
 
-![image](https://github.com/user-attachments/assets/344e4e66-70ba-47ce-854f-13779b0ef7d8)
-![image](https://github.com/user-attachments/assets/921b85a5-23a8-44f2-8f94-ca0f32939e5a)
-![image](https://github.com/user-attachments/assets/23aa9927-c45b-408a-9bb5-7890631d39cc)
+![image](https://github.com/user-attachments/assets/9fab0e32-d4a4-4f20-80cb-8db09a3bdcef)
+
+![image](https://github.com/user-attachments/assets/9f9205a7-7f75-4f9c-88c9-ae683beea86e)
+
 
 
 ## Contributing
