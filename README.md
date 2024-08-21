@@ -28,6 +28,8 @@
     
 2. **Install WAAC** distribution via [Windows ClickOnce](https://learn.microsoft.com/en-us/visualstudio/deployment/clickonce-security-and-deployment?view=vs-2022#install-clickonce-applications):
     - Install link: [Windows Advanced Attributes Changer](https://joeperpetua.github.io/get/waac/AdvancedAttributesChanger.application)
+## Update
+The application will look for the latest release upon openning and will perform an automatic update if possible.
 
 ## Usage
 
