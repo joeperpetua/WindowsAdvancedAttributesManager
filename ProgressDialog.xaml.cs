@@ -1,7 +1,7 @@
 ﻿using System.Reflection.PortableExecutable;
 using System.Windows;
 
-namespace AdvancedAttributesChanger
+namespace WindowsAdvancedAttributesManager
 {
     public partial class ProgressDialog : Window
     {

@@ -1,9 +1,9 @@
-<Window x:Class="AdvancedAttributesChanger.ProgressDialog"
+<Window x:Class="WindowsAdvancedAttributesManager.ProgressDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
-        Title="Windows Advanced Attributes Changer - Processing" Height="200" Width="500"
-        Icon="waac.ico"
+        Title="Windows Windows Advanced Attributes Manager - Processing" Height="200" Width="500"
+        Icon="waam.ico"
 		WindowStartupLocation="CenterScreen">
     <StackPanel Orientation="Vertical" VerticalAlignment="Center">
         <TextBlock Name="Header" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>

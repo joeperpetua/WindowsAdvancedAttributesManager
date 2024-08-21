@@ -18,7 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AdvancedAttributesChanger
+namespace WindowsAdvancedAttributesManager
 {
     public partial class MainWindow : Window
     {
@@ -31,7 +31,7 @@ namespace AdvancedAttributesChanger
         private void About_Click(object sender, RoutedEventArgs e)
         {
             AboutDialog aboutDialog = new AboutDialog();
-            aboutDialog.Owner = this;
+            // aboutDialog.Owner = this;
             aboutDialog.Show();
         }
 
@@ -75,7 +75,7 @@ namespace AdvancedAttributesChanger
             Mouse.OverrideCursor = Cursors.Wait;
 
             ProgressDialog progressDialog = new ProgressDialog();
-            progressDialog.Owner = this;
+            //progressDialog.Owner = this;
             progressDialog.UpdateMessage("Preview List", "Getting elements from file system...");
             progressDialog.Show();
 
@@ -149,7 +149,7 @@ namespace AdvancedAttributesChanger
             Mouse.OverrideCursor = Cursors.Wait;
 
             ProgressDialog progressDialog = new ProgressDialog();
-            progressDialog.Owner = this;
+            //progressDialog.Owner = this;
             progressDialog.UpdateMessage("File Modification", "Getting elements from file system...");
             progressDialog.Show();
 
@@ -580,7 +580,7 @@ namespace AdvancedAttributesChanger
                 Mouse.OverrideCursor = Cursors.Wait;
 
                 ProgressDialog progressDialog = new ProgressDialog();
-                progressDialog.Owner = this;
+                //progressDialog.Owner = this;
 
                 progressDialog.Show();
                 progressDialog.UpdateMessage(

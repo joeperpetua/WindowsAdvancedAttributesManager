@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AdvancedAttributesChanger
+namespace WindowsAdvancedAttributesManager
 {
     /// <summary>
     /// Interaction logic for AttributesComboBox.xaml

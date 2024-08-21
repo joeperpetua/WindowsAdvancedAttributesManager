@@ -17,6 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="waac.ico" />
+    <Resource Include="waam.ico" />
   </ItemGroup>
 </Project>

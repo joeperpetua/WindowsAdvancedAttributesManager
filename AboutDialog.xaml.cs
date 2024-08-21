@@ -17,7 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static System.Net.WebRequestMethods;
 
-namespace AdvancedAttributesChanger
+namespace WindowsAdvancedAttributesManager
 {
     /// <summary>
     /// Interaction logic for Window1.xaml
@@ -45,7 +45,7 @@ namespace AdvancedAttributesChanger
         {
             var psi = new ProcessStartInfo()
             {
-                FileName = "https://github.com/joeperpetua/AdvancedAttributesChanger",
+                FileName = "https://github.com/joeperpetua/WindowsAdvancedAttributesManager",
                 UseShellExecute = true
             };
             Process.Start(psi);

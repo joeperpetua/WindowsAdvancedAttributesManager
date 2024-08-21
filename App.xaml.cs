@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace AdvancedAttributesChanger
+namespace WindowsAdvancedAttributesManager
 {
     /// <summary>
     /// Interaction logic for App.xaml
