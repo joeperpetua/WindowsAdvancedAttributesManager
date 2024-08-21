@@ -146,12 +146,9 @@ namespace AdvancedAttributesChanger
             progressDialog.UpdateMessage("File Modification", "Getting elements from file system...");
             progressDialog.Show();
 
-
             await ApplyChanges(sender, e, progressDialog);
             
             Mouse.OverrideCursor = null;
-            this.Activate();
-            this.Focus();
         }
         private async Task ApplyChanges(object sender, RoutedEventArgs e, ProgressDialog progressDialog) {
             bool? runOnFile = RunFile.IsChecked;
