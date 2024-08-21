@@ -1,9 +1,10 @@
 
-# Windows Advanced Attributes Changer
+# Windows Advanced Attributes Manager
 
-<img src="https://github.com/user-attachments/assets/0fcca025-ca6a-490c-af3d-aec7aacab705" alt="Windows Advanced Attributes Changer Logo" >
+![waam-banner](https://github.com/user-attachments/assets/567b4a32-47c6-4851-83e4-b8b9ad58bd7c)
 
-**Windows Advanced Attributes Changer** (WAAC) is a Windows tool that allows users to quickly preview and modify file and folder advanced attributes such as temporary, sparse, offline, hidden, read-only, system, and more. It provides a user-friendly interface for managing file system attributes efficiently.
+
+**Windows Advanced Attributes Manager** (WAAM) is a Windows tool that allows users to quickly preview and modify file and folder advanced attributes such as temporary, sparse, offline, hidden, read-only, system, and more. It provides a user-friendly interface for managing file system attributes efficiently.
 
 ## Features
 
@@ -26,8 +27,8 @@
 
 1. **Install .NET Desktop Runtime 8.0.8** (if not installed yet):
     
-2. **Install WAAC** distribution via [Windows ClickOnce](https://learn.microsoft.com/en-us/visualstudio/deployment/clickonce-security-and-deployment?view=vs-2022#install-clickonce-applications):
-    - Install link: [Windows Advanced Attributes Changer](https://joeperpetua.github.io/get/waac/AdvancedAttributesChanger.application)
+2. **Install WAAM** distribution via [Windows ClickOnce](https://learn.microsoft.com/en-us/visualstudio/deployment/clickonce-security-and-deployment?view=vs-2022#install-clickonce-applications):
+    - Install link: [Windows Advanced Attributes Manager](https://joeperpetua.github.io/get/waam/WindowsAdvancedAttributesManager.application)
 ## Update
 The application will look for the latest release upon openning and will perform an automatic update if possible.
 
@@ -48,4 +49,4 @@ The application will look for the latest release upon openning and will perform 
 
 ## Contributing
 
-Feature requests and bug reports are welcome! Please [open an issue](https://github.com/joeperpetua/AdvancedAttributesChanger/issues) on this repository for any problems or suggestions.
+Feature requests and bug reports are welcome! Please [open an issue](https://github.com/joeperpetua/AdvancedAttributesManager/issues) on this repository for any problems or suggestions.
