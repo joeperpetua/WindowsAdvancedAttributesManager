@@ -10,14 +10,29 @@ namespace AdvancedAttributesChanger
             InitializeComponent();
         }
 
-        public void UpdateMessage(string header, string message, long items, long start, long seconds)
+        public void UpdateMessage(string header, string message, long items = 0, long start = 0, long seconds = 0, bool spin = true, bool allowClose = false)
         {
             Header.Text = header;
             Message.Text = message;
             if (items > 0) {
                 long elapsed = seconds - start == 0 ? 1 : seconds - start;
-                Items.Text = $"Processed items: {items.ToString()} ({items / elapsed}/s)";
+                Items.Text = $"Processed items: {items} ({items / elapsed}/s)";
             }
+
+            if (!spin)
+            {
+                Spinner.Visibility = Visibility.Hidden;
+            }
+
+            if (allowClose)
+            {
+                Close_Button.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

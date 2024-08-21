@@ -1,13 +1,16 @@
 <Window x:Class="AdvancedAttributesChanger.ProgressDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Windows Advanced Attributes Changer" Height="200" Width="400"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        Title="Windows Advanced Attributes Changer" Height="200" Width="500"
         Icon="waac.ico"
 		WindowStartupLocation="CenterScreen">
     <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-      <TextBlock Name="Header" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
-      <TextBlock Name="Message" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
-      <TextBlock Name="Items" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
-      <TextBlock Name="Progress" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+        <TextBlock Name="Header" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
+        <TextBlock Name="Message" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+        <TextBlock Name="Items" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+        <TextBlock Name="Progress" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+        <fa:FontAwesome Name="Spinner" Icon="Asterisk" Spin="True" SpinDuration="1" FontSize="24" />
+        <Button Name="Close_Button" Template="{DynamicResource ButtonTemplate}" Padding="5" Width="100" Click="Close_Click" Content="Close" Visibility="Hidden"></Button>
     </StackPanel>
 </Window>

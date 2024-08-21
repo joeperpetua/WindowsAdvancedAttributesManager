@@ -68,7 +68,7 @@ namespace AdvancedAttributesChanger
             Mouse.OverrideCursor = Cursors.Wait;
 
             ProgressDialog progressDialog = new ProgressDialog();
-            progressDialog.UpdateMessage("Preview List", "Getting elements from file system...", 0, 0, 0);
+            progressDialog.UpdateMessage("Preview List", "Getting elements from file system...");
             progressDialog.Show();
 
             await RenderAttributeViewerList(sender, e, progressDialog);
@@ -131,7 +131,7 @@ namespace AdvancedAttributesChanger
                 {
                     StackPanel itemToAdd = CreateViewerItem(directoryChild, GetAttributeNames(directoryChild));
                     AttributesPreviewList.Items.Add(itemToAdd);
-                    progressDialog.UpdateMessage("Preview List", "Generating preview list...", ++processedItems, start, DateTimeOffset.Now.ToUnixTimeSeconds());
+                    progressDialog.UpdateMessage("Preview List", "Generating preview list...", items: ++processedItems, start: start, seconds: DateTimeOffset.Now.ToUnixTimeSeconds());
                 }
 
                 FilePathSelection.Text = "";
@@ -143,13 +143,13 @@ namespace AdvancedAttributesChanger
             Mouse.OverrideCursor = Cursors.Wait;
 
             ProgressDialog progressDialog = new ProgressDialog();
-            progressDialog.UpdateMessage("File Modification", "Getting elements from file system...", 0, 0, 0);
+            progressDialog.UpdateMessage("File Modification", "Getting elements from file system...");
             progressDialog.Show();
 
 
             await ApplyChanges(sender, e, progressDialog);
             
-            progressDialog.Close();
+            // progressDialog.Close();
             Mouse.OverrideCursor = null;
             this.Activate();
             this.Focus();
@@ -159,6 +159,8 @@ namespace AdvancedAttributesChanger
             if (runOnFile == null) { return; }
             bool addSuccess = false;
             bool removeSuccess = false;
+            long processedItems = 0;
+            long start = DateTimeOffset.Now.ToUnixTimeSeconds();
 
             if (runOnFile == true) {
                 String path = FilePathSelection.Text;
@@ -177,7 +179,7 @@ namespace AdvancedAttributesChanger
                     attributesToRemove.Add(((TextBlock)item.Children[1]).Text.ToString());
                 }
 
-                progressDialog.UpdateMessage("File Modification", "Applying attributes modification...", 0, 0, 0);
+                progressDialog.UpdateMessage("File Modification", "Applying attributes modification...");
 
                 addSuccess = AddAttributes(path, attributesToAdd);
                 removeSuccess = RemoveAttributes(path, attributesToRemove);
@@ -219,9 +221,8 @@ namespace AdvancedAttributesChanger
 
                 //List<string> filesToProcess = await GetChildren(path, RunRecursive.IsChecked, IncludeDir.IsChecked);
 
-                progressDialog.UpdateMessage("File Modification", "Applying attributes modification...", 0, 0, 0);
-                long processedItems = 0;
-                long start = DateTimeOffset.Now.ToUnixTimeSeconds();
+                progressDialog.UpdateMessage("File Modification", "Applying attributes modification...");
+                
                 await foreach (String directoryChild in GetChildren(path, RunRecursive.IsChecked, IncludeDir.IsChecked))
                 {
                     bool resultAdd = AddAttributes(directoryChild, attributesToAdd);
@@ -246,7 +247,13 @@ namespace AdvancedAttributesChanger
                     if (resultAdd == false) { addSuccess = false; }
                     if (resultRemove == false) { removeSuccess = false; }
 
-                    progressDialog.UpdateMessage("File Modification", "Applying attributes modification...", ++processedItems, start, DateTimeOffset.Now.ToUnixTimeSeconds());
+                    progressDialog.UpdateMessage(
+                        "File Modification", 
+                        "Applying attributes modification...", 
+                        items: ++processedItems, 
+                        start: start, 
+                        seconds: DateTimeOffset.Now.ToUnixTimeSeconds()
+                    );
                 }
 
                 await RenderAttributeViewerList(DirectoryPathSelection, e, progressDialog);
@@ -254,10 +261,28 @@ namespace AdvancedAttributesChanger
 
             if (addSuccess && removeSuccess)
             {
-                MessageBox.Show("Changes applied successfully!");
+                //MessageBox.Show("Changes applied successfully!");
+                progressDialog.UpdateMessage(
+                    "File Modification", 
+                    "Changes applied successfully!", 
+                    items: processedItems, 
+                    start: start, 
+                    seconds: DateTimeOffset.Now.ToUnixTimeSeconds(),
+                    spin: false,
+                    allowClose: true
+                );
             }
             else {
-                MessageBox.Show("Errors happened while trying to apply the changes.\n\nChanges applied partially.");
+                //MessageBox.Show("Errors happened while trying to apply the changes.\n\nChanges applied partially.");
+                progressDialog.UpdateMessage(
+                    "File Modification",
+                    "Errors happened while trying to apply the changes.\n\nChanges applied partially.",
+                    items: processedItems,
+                    start: start,
+                    seconds: DateTimeOffset.Now.ToUnixTimeSeconds(),
+                    spin: false,
+                    allowClose: true
+                );
             }
 
         }
@@ -542,7 +567,7 @@ namespace AdvancedAttributesChanger
             return alreadyInList;
         }
 
-        private void Download_Preview(object sender, RoutedEventArgs e) {
+        private async void Download_Preview(object sender, RoutedEventArgs e) {
             Microsoft.Win32.SaveFileDialog saveDialog = new Microsoft.Win32.SaveFileDialog();
             saveDialog.FileName = "Preview_Export";
             saveDialog.DefaultExt = ".csv";
@@ -553,22 +578,42 @@ namespace AdvancedAttributesChanger
             // Process save file dialog box results
             if (result == true)
             {
-                // Save document
-                string filename = saveDialog.FileName;
-                String fileHeaders = "Path\tAttributes\n";
-                String fileContent = "";
-                foreach (StackPanel item in AttributesPreviewList.Items)
-                {
-                    TextBox path = (TextBox)item.Children[0];
-                    TextBlock attributes = (TextBlock)item.Children[2];
-                    fileContent += $"{path.Text}\t{attributes.Text}\n";
-                }
+                Mouse.OverrideCursor = Cursors.Wait;
 
-                File.WriteAllText(filename, fileHeaders + fileContent);
                 ProgressDialog progressDialog = new ProgressDialog();
-                progressDialog.UpdateMessage("Export finised!", $"File list exported as tab delimited .CSV file.\n({filename})", 0, 0, 0);
-                progressDialog.ShowDialog();
+                progressDialog.Owner = this;
+                progressDialog.UpdateMessage("Exporting preview...", $"This could take a few seconds/minutes depending on the amount of files to process. ({AttributesPreviewList.Items.Count})");
+                progressDialog.Show();
+                String filename = await WriteToFile(saveDialog.FileName);
+                progressDialog.UpdateMessage("Export finised!", $"File list exported as tab delimited .CSV file.\n({filename})", spin: false, allowClose: true);
+                
+                Mouse.OverrideCursor = null;
+                this.Activate();
+                this.Focus();
             }
         }
+
+        private Task<String> WriteToFile(String filename) {
+            Trace.WriteLine($"Saving file to {filename}");
+            String fileHeaders = "Path\tAttributes\n";
+            String fileContent = "";
+            foreach (StackPanel item in AttributesPreviewList.Items)
+            {
+                TextBox path = (TextBox)item.Children[0];
+                TextBlock attributes = (TextBlock)item.Children[2];
+                fileContent += $"{path.Text}\t{attributes.Text}\n";
+            }
+
+            try
+            {
+                File.WriteAllText(filename, fileHeaders + fileContent);
+            }
+            catch (Exception error)
+            {
+                throw new Exception("Failed to write data to file.", error);
+            }
+
+            return Task.FromResult(filename);
+        } 
     }
 }
